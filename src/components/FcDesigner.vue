@@ -326,7 +326,7 @@
                 "
                 @click="activeTab = 'props'"
               >
-                {{ t("designer.component") }}
+               11111111
               </div>
               <div
                 class="_fc-r-tab"
