@@ -326,7 +326,7 @@
                 "
                 @click="activeTab = 'props'"
               >
-               11111111
+                {{ t("designer.component") }}
               </div>
               <div
                 class="_fc-r-tab"
@@ -337,7 +337,7 @@
                 }"
                 @click="activeTab = 'form'"
               >
-                2222222222
+                {{ t("designer.form") }}
               </div>
               <div
                 class="_fc-r-tab"
