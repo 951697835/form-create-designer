@@ -337,7 +337,7 @@
                 }"
                 @click="activeTab = 'form'"
               >
-                {{ t("designer.form") }}
+                2222222222
               </div>
               <div
                 class="_fc-r-tab"
