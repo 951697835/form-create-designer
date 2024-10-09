@@ -1,50 +1,222 @@
 <template>
-  <el-button type="primary" @click="add">新增</el-button>
-  <el-table :data="tableData" style="width: 100%">
-    <el-table-column prop="date" label="Date" width="180" />
-    <el-table-column prop="name" label="Name" width="180" />
-    <el-table-column prop="address" label="Address" />
-  </el-table>
-  <el-dialog
-    v-model="dialogVisible"
-    title="Tips"
-    width="500"
-    :before-close="handleClose"
-  >
-    <span>This is a message</span>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogVisible = false">
-          Confirm
-        </el-button>
-      </div>
-    </template>
-  </el-dialog>
+  <div class="_fd-event">
+    <el-input
+      v-model="inputCS"
+      placeholder="请输入内容"
+      @blur="submit"
+    ></el-input>
+  </div>
 </template>
-<script setup>
-import { defineComponent, getCurrentInstance, ref, defineEmits } from "vue";
 
-const vm = getCurrentInstance();
+<script>
+import unique from "@form-create/utils/lib/unique";
+import is from "@form-create/utils/lib/type";
+import { defineComponent } from "vue";
+const $T = "$FNX:";
 
-const emits = defineEmits(["addEvent"]);
-const dialogVisible = ref(false);
-const tableData = ref([
-  {
-    date: "2016-05-03",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
+const isFNX = (v) => {
+  return is.String(v) && v.indexOf($T) === 0;
+};
+
+export default defineComponent({
+  name: "DataConfig",
+  emits: ["update:modelValue"],
+  props: {
+    rule: { type: Array, default: () => [] },
   },
-]);
-const handleClose = (done) => {
-  dialogVisible.value = false;
-};
-const add = () => {
-  dialogVisible.value = true;
-  let dataJson = localStorage.getItem("fc-config-$101");
-
-  emits("addEvent", dataJson);
-
-  console.log("zxxxzxxxxxx11", dataJson);
-};
+  inject: ["designer"],
+  data() {
+    return {
+      inputCS: "",
+    };
+  },
+  computed: {
+    t() {
+      return this.designer.setupState.t;
+    },
+  },
+  watch: {
+    rule(newValue) {
+      console.log("propspropsprops==>", newValue);
+    },
+  },
+  mounted() {
+    console.log("propsmounted==>", this.rule);
+  },
+  methods: {
+    submit() {
+      this.$emit("update:modelValue", this.inputCS);
+    },
+  },
+  beforeCreate() {
+    window.$inject = {
+      $f: {},
+      rule: [],
+      self: {},
+      option: {},
+      inject: {},
+      args: [],
+    };
+  },
+});
 </script>
+
+<style>
+._fd-event .el-button {
+  font-weight: 400;
+  width: 100%;
+  border-color: #2e73ff;
+  color: #2e73ff;
+}
+
+._fd-event .el-badge {
+  width: 100%;
+}
+
+._fd-event-dialog .el-dialog__body {
+  padding: 10px 20px;
+}
+
+._fd-event-con .el-main {
+  padding: 0;
+}
+
+._fd-event-l,
+._fd-event-r {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  border: 1px solid #ececec;
+}
+
+._fd-event-dropdown .el-dropdown-menu {
+  max-height: 500px;
+  overflow: scroll;
+}
+
+._fd-event-head {
+  display: flex;
+  padding: 5px 15px;
+  border-bottom: 1px solid #eee;
+  background: #f8f9ff;
+  align-items: center;
+}
+
+._fd-event-head .el-button.is-link {
+  color: #2f73ff;
+}
+
+._fd-event-r {
+  border-left: 0 none;
+}
+
+._fd-event-r ._fd-event-head {
+  justify-content: space-between;
+}
+
+._fd-event-l > .el-main,
+._fd-event-r > .el-main {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  flex-basis: auto;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
+._fd-event-r > .el-main {
+  flex-direction: column;
+}
+
+._fd-event-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 250px;
+  font-size: 14px;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+._fd-event-l .el-menu {
+  padding: 0 10px 5px;
+  border-right: 0 none;
+  width: 100%;
+  border-top: 0 none;
+  overflow: auto;
+}
+
+._fd-event-l .el-menu-item.is-active {
+  background: #e4e7ed;
+  color: #303133;
+}
+
+._fd-event-l .el-menu-item {
+  height: auto;
+  line-height: 1em;
+  border: 1px solid #ececec;
+  border-radius: 5px;
+  padding: 0;
+  margin-top: 5px;
+}
+
+._fd-event-method {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 225px;
+  font-size: 14px;
+  font-family: monospace;
+  color: #9d238c;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+._fd-event-method > span:first-child,
+._fd-fn-list-method > span:first-child {
+  color: #9d238c;
+}
+
+._fd-event-method > span:first-child > span,
+._fd-fn-list-method > span:first-child > span {
+  color: #000;
+  margin-left: 10px;
+}
+
+._fd-event-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+}
+
+._fd-event-title .fc-icon {
+  margin-right: 6px;
+  font-size: 18px;
+  color: #282828;
+}
+
+._fd-event-title .el-input {
+  width: 200px;
+}
+
+._fd-event-title .el-input__wrapper {
+  box-shadow: none;
+}
+
+._fd-event-title .el-menu-item.is-active i {
+  color: #282828;
+}
+
+._fd-event-con .CodeMirror {
+  height: 100%;
+  width: 100%;
+}
+
+._fd-event-con .CodeMirror-wrap pre.CodeMirror-line {
+  padding-left: 20px;
+}
+</style>
