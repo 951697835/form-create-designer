@@ -1,11 +1,10 @@
 <template>
   <div class="_fd-event">
-    <!-- <el-input
+    <el-input
       v-model="inputCS"
       placeholder="请输入内容"
       @blur="submit"
-    ></el-input> -->
-    <input v-model="inputCs" placeholder="请输入内容" @blur="submit"/>
+    ></el-input>
   </div>
 </template>
 
