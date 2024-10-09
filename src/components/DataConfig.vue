@@ -5,6 +5,112 @@
       placeholder="请输入内容"
       @blur="submit"
     ></el-input>
+    <div class="qj-info">
+      <el-divider> 全局信息 </el-divider>
+      <p>全局参数</p>
+      <el-table :data="qjTableData" border style="width: 100%">
+        <el-table-column
+          prop="date"
+          label="参数名"
+          width="150"
+          align="center"
+        />
+        <el-table-column prop="name" label="含义" width="150" align="center" />
+      </el-table>
+      <p>全局数据源信息（全局用一个数据源）</p>
+      <el-select
+        v-model="selectValue"
+        placeholder="请选择"
+        size="large"
+        style="width: 240px"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+    </div>
+    <div class="qj-info">
+      <el-divider> 组件sql配置 </el-divider>
+      <el-form-item label="sql类型">
+        <el-select
+          v-model="selectValue"
+          placeholder="请选择"
+          size="large"
+          style="width: 240px"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="sql配置">
+        <el-button type="primary" plain>试执行</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="textarea" type="textarea" placeholder="请输入" />
+      </el-form-item>
+      <p>
+        查询列配置
+        <el-button style="width: 80px" type="primary" plain> 新增 </el-button>
+      </p>
+      <el-table :data="qjTableData" border style="width: 100%">
+        <el-table-column
+          prop="date"
+          label="sql数据列名"
+          width="150"
+          align="center"
+        />
+        <el-table-column prop="name" label="含义" width="150" align="center" />
+        <el-table-column align="center" label="操作">
+          <template #default="scope">
+            <el-button link> 编辑 </el-button>
+            <el-button link> 删除 </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <p>
+        查询条件配置
+        <el-button style="width: 80px" type="primary" plain> 新增 </el-button>
+      </p>
+      <el-table :data="qjTableData" border style="width: 100%">
+        <el-table-column
+          prop="date"
+          label="条件名称"
+          width="150"
+          align="center"
+        />
+        <el-table-column
+          prop="name"
+          label="条件字段"
+          width="150"
+          align="center"
+        />
+        <el-table-column
+          prop="name"
+          label="sql条件字段"
+          width="150"
+          align="center"
+        />
+        <el-table-column
+          prop="name"
+          label="条件内容"
+          width="150"
+          align="center"
+        />
+        <el-table-column align="center" label="操作">
+          <template #default="scope">
+            <el-button link> 编辑 </el-button>
+            <el-button link> 删除 </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
@@ -12,6 +118,7 @@
 import unique from "@form-create/utils/lib/unique";
 import is from "@form-create/utils/lib/type";
 import { defineComponent } from "vue";
+// import * as dataSourceApi from "../api/dataSourceManagement";
 
 export default defineComponent({
   name: "DataConfig",
@@ -24,6 +131,19 @@ export default defineComponent({
     return {
       inputCS: "",
       cacheData: [],
+      qjTableData: [],
+      selectValue: "",
+      textarea: "",
+      options: [
+        {
+          value: "Option1",
+          label: "Option1",
+        },
+        {
+          value: "Option2",
+          label: "Option2",
+        },
+      ],
     };
   },
   computed: {
@@ -42,6 +162,8 @@ export default defineComponent({
     },
   },
   mounted() {
+    // let res = dataSourceApi.getDataSourceById(1);
+
     console.log("propsmounted==>", this.rule);
     this.cacheData = JSON.parse(localStorage.getItem("cacheData")) || [];
     console.log("cacheData=>", this.cacheData);
@@ -77,7 +199,7 @@ export default defineComponent({
         this.cacheData.push(this.rule);
         // localStorage.setItem("cacheData", JSON.stringify(this.cacheData));
       }
-        localStorage.setItem("cacheData", JSON.stringify(this.cacheData));
+      localStorage.setItem("cacheData", JSON.stringify(this.cacheData));
 
       // this.cacheData.push(this.rule);
 
