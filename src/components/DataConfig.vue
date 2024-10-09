@@ -1,10 +1,6 @@
 <template>
   <div class="_fd-event">
-    <el-input
-      v-model="inputCS"
-      placeholder="请输入内容"
-      @blur="submit"
-    ></el-input>
+    <el-button type="primary">Primary</el-button>
   </div>
 </template>
 
