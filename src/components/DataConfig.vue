@@ -22,35 +22,29 @@
     </template>
   </el-dialog>
 </template>
-<script>
-import { defineComponent } from "vue";
-export default defineComponent({
-  name: "dataConfig",
-  data() {
-    return {
-      dialogVisible: false,
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-      ],
-    };
-  },
-  mounted() {},
-  methods: {
-    add() {
-      console.log("zxxxzxxxxxx",this.$refs.designer);
-      // this.$refs.designer.setRule(formCreate.parseJson(json));
+<script setup>
+import { defineComponent, getCurrentInstance, ref, defineEmits } from "vue";
 
-      // this.dialogVisible = true;
-    },
-    handleClose(done) {
-      this.$confirm("确认关闭？").then((_) => {
-        done();
-      });
-    },
+const vm = getCurrentInstance();
+
+const emits = defineEmits(["addEvent"]);
+const dialogVisible = ref(false);
+const tableData = ref([
+  {
+    date: "2016-05-03",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
   },
-});
+]);
+const handleClose = (done) => {
+  dialogVisible.value = false;
+};
+const add = () => {
+  dialogVisible.value = true;
+  let dataJson = localStorage.getItem("fc-config-$101");
+
+  emits("addEvent", dataJson);
+
+  console.log("zxxxzxxxxxx11", dataJson);
+};
 </script>

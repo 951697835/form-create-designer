@@ -366,7 +366,7 @@
               ></DragForm>
             </el-main>
             <el-main class="_fc-r-tab-form" v-show="activeTab === 'data'">
-              <DataConfig></DataConfig>
+              <DataConfig @addEvent="handleDataJson"></DataConfig>
             </el-main>
             <el-main
               class="_fc-r-tab-props"
@@ -595,6 +595,7 @@ export default defineComponent({
     "inputData",
     "save",
     "clear",
+    "dataJson",
   ],
   setup(props) {
     const { menu, height, mask, locale, handle } = toRefs(props);
@@ -989,6 +990,10 @@ export default defineComponent({
           data.inputForm.option.resetBtn.show = false;
           methods.clearActiveRule();
         }
+      },
+      handleDataJson(dataJson) {
+        console.log("xxxxxzzzzzzz", dataJson);
+        vm.emit("addEvent", dataJson);
       },
       inputSave() {
         const formData = data.inputForm.api.formData();
