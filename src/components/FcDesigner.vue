@@ -597,7 +597,7 @@ import {
 import viewForm, { designerForm } from "../utils/form";
 import { t as globalT } from "../utils/locale";
 import EventConfig from "./EventConfig.vue";
-import DataConfig from "./dataConfig.vue";
+import DataConfig from "./DataConfig.vue";
 import {
   computed,
   defineComponent,
