@@ -417,7 +417,7 @@
               </div>
             </el-header>
             <el-main class="_fc-r-tab-form" v-show="activeTab === 'data'">
-              <DataConfig v-if="eventShow" :rule="dataRule" />
+              <DataConfig v-if="activeTab === 'data'" :rule="dataRule" />
             </el-main>
             <el-main
               class="_fc-r-tab-form"
