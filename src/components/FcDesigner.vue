@@ -1576,6 +1576,7 @@ export default defineComponent({
       },
       toolActive(rule) {
         data.dataRule = rule;
+        console.log("toolActive", rule);
         methods.unWatchActiveRule();
         data.customForm.isShow = false;
         data.customForm.config = null;
