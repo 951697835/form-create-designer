@@ -417,7 +417,11 @@
               </div>
             </el-header>
             <el-main class="_fc-r-tab-form" v-show="activeTab === 'data'">
-              <DataConfig v-if="activeTab === 'data'" :rule="dataRule" />
+              <DataConfig
+                v-if="activeTab === 'data'"
+                :rule="dataRule"
+                @update:modelValue="changeData"
+              />
             </el-main>
             <el-main
               class="_fc-r-tab-form"
@@ -598,6 +602,7 @@ import viewForm, { designerForm } from "../utils/form";
 import { t as globalT } from "../utils/locale";
 import EventConfig from "./EventConfig.vue";
 import DataConfig from "./DataConfig.vue";
+
 import {
   computed,
   defineComponent,
@@ -2195,6 +2200,9 @@ export default defineComponent({
       },
       changeEvent(on) {
         data.activeRule._on = on;
+      },
+      changeData(on) {
+        console.log("changeData=>", on);
       },
       triggerHandle(item) {
         item.handle();

@@ -12,11 +12,6 @@
 import unique from "@form-create/utils/lib/unique";
 import is from "@form-create/utils/lib/type";
 import { defineComponent } from "vue";
-const $T = "$FNX:";
-
-const isFNX = (v) => {
-  return is.String(v) && v.indexOf($T) === 0;
-};
 
 export default defineComponent({
   name: "DataConfig",
@@ -28,6 +23,7 @@ export default defineComponent({
   data() {
     return {
       inputCS: "",
+      cacheData: [],
     };
   },
   computed: {
@@ -37,14 +33,54 @@ export default defineComponent({
   },
   watch: {
     rule(newValue) {
-      console.log("propspropsprops==>", newValue);
+      console.log(
+        "propspropsprops==>",
+        newValue,
+        "____fc___id=>",
+        this.rule._fc_id
+      );
     },
   },
   mounted() {
     console.log("propsmounted==>", this.rule);
+    this.cacheData = JSON.parse(localStorage.getItem("cacheData")) || [];
+    console.log("cacheData=>", this.cacheData);
+    if (this.cacheData.length > 0) {
+      this.cacheData.forEach((item) => {
+        if (item._fc_id == this.rule._fc_id) {
+          this.inputCS = item.inputValue;
+        }
+      });
+    }
   },
   methods: {
     submit() {
+      console.log("propssubmit==>", this.cacheData);
+      // this.rule.inputValue = this.inputCS;
+      if (this.cacheData.length > 0) {
+        this.cacheData.forEach((item) => {
+          if (item._fc_id == this.rule._fc_id) {
+            console.log("xxxxxttttt", this.inputCS);
+            item.inputValue = this.inputCS;
+          }
+        });
+        const existingObject = this.cacheData.find(
+          (obj) => obj._fc_id === this.rule._fc_id
+        );
+        if (!existingObject) {
+          this.rule.inputValue = this.inputCS;
+          this.cacheData.push(this.rule);
+          // localStorage.setItem("cacheData", JSON.stringify(this.cacheData));
+        }
+      } else {
+        this.rule.inputValue = this.inputCS;
+        this.cacheData.push(this.rule);
+        // localStorage.setItem("cacheData", JSON.stringify(this.cacheData));
+      }
+        localStorage.setItem("cacheData", JSON.stringify(this.cacheData));
+
+      // this.cacheData.push(this.rule);
+
       this.$emit("update:modelValue", this.inputCS);
     },
   },
