@@ -406,7 +406,11 @@
               </div>
               <div
                 class="_fc-r-tab"
-                v-if="!config || config.showFormConfig !== false"
+                v-if="
+                  !!activeRule ||
+                  customForm.isShow ||
+                  (config && config.showFormConfig === false)
+                "
                 :class="{
                   active:
                     activeTab === 'data' && (!!activeRule || customForm.isShow),
@@ -649,7 +653,16 @@ export default defineComponent({
     locale: Object,
     handle: Array,
   },
-  emits: ["active", "create", "copy", "delete", "drag", "inputData", "save"],
+  emits: [
+    "active",
+    "create",
+    "copy",
+    "delete",
+    "drag",
+    "inputData",
+    "save",
+    "update:modelValue",
+  ],
   setup(props) {
     const { menu, height, mask, locale, handle } = toRefs(props);
     const vm = getCurrentInstance();
@@ -707,6 +720,7 @@ export default defineComponent({
     };
 
     const data = reactive({
+      szxFlag: 0,
       cacheProps: {},
       operation: {
         idx: -1,
@@ -865,6 +879,13 @@ export default defineComponent({
             data.preview.rule = data.preview.option = null;
           });
         }
+      }
+    );
+    watch(
+      () => data.szxFlag,
+      function (n) {
+        console.log("nnnnnnnn=>", n);
+        vm.emit("update:modelValue", data.szxFlag);
       }
     );
 
@@ -2203,6 +2224,8 @@ export default defineComponent({
       },
       changeData(on) {
         console.log("changeData=>", on);
+        data.szxFlag = on;
+        console.log("changeData11111111111=>", data.szxFlag);
       },
       triggerHandle(item) {
         item.handle();

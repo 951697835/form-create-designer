@@ -50,7 +50,9 @@
         </el-select>
       </el-form-item>
       <el-form-item label="sql配置">
-        <el-button type="primary" plain>试执行</el-button>
+        <el-button type="primary" plain @click="trialExecution"
+          >试执行</el-button
+        >
       </el-form-item>
       <el-form-item>
         <el-input v-model="textarea" type="textarea" placeholder="请输入" />
@@ -129,6 +131,7 @@ export default defineComponent({
   inject: ["designer"],
   data() {
     return {
+      szxFlag: 0,
       inputCS: "",
       cacheData: [],
       qjTableData: [],
@@ -176,13 +179,17 @@ export default defineComponent({
     }
   },
   methods: {
+    trialExecution() {
+      this.szxFlag = 1;
+
+      this.$emit("update:modelValue", this.szxFlag);
+    },
     submit() {
       console.log("propssubmit==>", this.cacheData);
       // this.rule.inputValue = this.inputCS;
       if (this.cacheData.length > 0) {
         this.cacheData.forEach((item) => {
           if (item._fc_id == this.rule._fc_id) {
-            console.log("xxxxxttttt", this.inputCS);
             item.inputValue = this.inputCS;
           }
         });
@@ -203,7 +210,7 @@ export default defineComponent({
 
       // this.cacheData.push(this.rule);
 
-      this.$emit("update:modelValue", this.inputCS);
+      // this.$emit("update:modelValue", this.szxFlag);
     },
   },
   beforeCreate() {
